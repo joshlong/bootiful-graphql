@@ -1,4 +1,8 @@
 type Query {
     secureHello: String
-    hello(name: String) : String
+    hello(name: String) : Greeting
+}
+
+type Greeting {
+    message: String
 }

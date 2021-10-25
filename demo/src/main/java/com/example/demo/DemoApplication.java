@@ -52,6 +52,9 @@ class SecurityConfiguration {
 	}
 }
 
+record Greeting(String message) {
+}
+
 @Configuration
 class SimpleRuntimeWiringConfigurer implements RuntimeWiringConfigurer {
 
@@ -62,7 +65,7 @@ class SimpleRuntimeWiringConfigurer implements RuntimeWiringConfigurer {
 			.type("Query", b -> b.dataFetcher("hello", environment -> {
 				var args = environment.getArguments();
 				var name = args.get("name");
-				return "Hello, " + name + "!";
+				return new Greeting("Hello, " + name + "!");
 			}))
 			.build();
 	}
