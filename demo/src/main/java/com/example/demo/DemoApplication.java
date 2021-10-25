@@ -12,12 +12,6 @@ import org.springframework.stereotype.Controller;
 @SpringBootApplication
 public class DemoApplication {
 
-
-	@Bean
-	ApplicationRunner applicationRunner() {
-		return events -> log.info("hello, world!");
-	}
-
 	public static void main(String[] args) {
 		SpringApplication.run(DemoApplication.class, args);
 	}
