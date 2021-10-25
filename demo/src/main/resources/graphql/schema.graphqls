@@ -1,4 +1,4 @@
 type Query {
-
- hello: String
+    secureHello: String
+    hello(name: String) : String
 }
