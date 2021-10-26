@@ -18,10 +18,10 @@
 * Great, but let's suppose we wanted to add a field to explain when someone
   enrolled. We need a `Date`, but GraphQL doesn't support a `Date` out of the
   box. You can easily handle this with a customer `resolver` (controller handler
-  method) that uses a `SimpleDataFormat` in a threadlocal to return
+  method) that uses a `SimpleDataFormat` in a `ThreadLocal` to return
   a `String` (see below for the code).
-* this ability, to mesh resolvers to form the whole object graph independent of the underlying representation, is one of the reasons graphql is so powerful. let's suppose we wanted to provide `Order` data for each customer, as well. 
-* 
+* this ability, to mesh resolvers to form the whole object graph independent of the underlying representation, is one of the reasons graphql is so powerful. let's suppose we wanted to provide `Order` data for each customer, as well. Return `Mono<ArrayList<Order>>` that's `delayElement(Duration)`'d so that we can demonstrate concurrency 
+* 	
 
 ## GraphQL
 

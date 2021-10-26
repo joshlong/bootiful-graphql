@@ -22,6 +22,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.text.SimpleDateFormat;
+import java.time.Duration;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -88,16 +89,16 @@ class HelloGraphqlController {
 
 	HelloGraphqlController() {
 		List.of("Yuxin", "Violetta", "Olga", "Madhura", "Josh", "Dave", "Yuxin", "Spencer")
-			.forEach(this::buildCustomer);
+			.forEach(this::createCustomer);
 	}
 
 	@MutationMapping
 	Mono<Customer> addCustomer(@Argument String name) {
-		var key = this.buildCustomer(name);
+		var key = this.createCustomer(name);
 		return Mono.just(this.db.get(key));
 	}
 
-	private int buildCustomer(String name) {
+	private int createCustomer(String name) {
 		var key = this.id.incrementAndGet();
 		this.db.put(key, new Customer(key, new Date(), name));
 		return key;
@@ -137,11 +138,16 @@ class HelloGraphqlController {
 	}
 
 	@SchemaMapping(typeName = "Customer")
-	Flux<Order> orders(Customer customer) {
+	Mono<ArrayList<Order>> orders(Customer customer) throws Exception {
+
 		var list = new ArrayList<Order>();
 		var max = Math.random() * 100;
-		for (var id = 1; id < max; id++) list.add(new Order(id, customer.id()));
-		return Flux.fromIterable(list);
+
+		for (var id = 1; id < max; id++)
+			list.add(new Order(id, customer.id()));
+
+		return Mono.just(list)
+			.delayElement(Duration.ofSeconds(1));
 	}
 
 }
