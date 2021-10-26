@@ -1,6 +1,23 @@
 type Query {
     secureHello: String
     hello(name: String) : Greeting
+    customers : [Customer]
+}
+
+type Order {
+ id : ID
+ customerId: ID
+}
+
+type Mutation  {
+    addCustomer( name :String) : Customer
+}
+
+type Customer {
+    id : ID
+    name : String
+    enrollment: String
+    orders : [Order]
 }
 
 type Greeting {
