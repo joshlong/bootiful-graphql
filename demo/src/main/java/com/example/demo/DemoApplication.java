@@ -141,7 +141,7 @@ class HelloGraphqlController {
 	Mono<ArrayList<Order>> orders(Customer customer) throws Exception {
 
 		var list = new ArrayList<Order>();
-		var max = Math.random() * 100;
+		var max = Math.random() * 10;
 
 		for (var id = 1; id < max; id++)
 			list.add(new Order(id, customer.id()));

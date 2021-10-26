@@ -21,7 +21,8 @@
   method) that uses a `SimpleDataFormat` in a `ThreadLocal` to return
   a `String` (see below for the code).
 * this ability, to mesh resolvers to form the whole object graph independent of the underlying representation, is one of the reasons graphql is so powerful. let's suppose we wanted to provide `Order` data for each customer, as well. Return `Mono<ArrayList<Order>>` that's `delayElement(Duration)`'d so that we can demonstrate concurrency 
-* 	
+* add a test
+* add security 
 
 ## GraphQL
 
@@ -42,3 +43,28 @@ curl  -v -u jlong:pw http://localhost:8080/graphql \
 --data-raw '{"query":"query { secureHello }" }'
 ```
  
+the following incantation shows how to write a test:
+
+```java 
+
+	@Autowired
+	private WebGraphQlTester webGraphQlTester;
+
+	@Test
+	void contextLoads() {
+		var query = """
+			query {
+					hello(name:"josh") {
+							message
+					}
+			}
+			""";
+		Assertions.assertNotNull(this.webGraphQlTester);
+		this.webGraphQlTester
+			.query(query)
+			.execute()
+			.path("hello.message")
+			.entity(String.class)
+			.matches(g -> g.equalsIgnoreCase("hello, josh!"));
+	}
+```
