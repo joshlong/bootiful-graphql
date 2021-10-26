@@ -82,20 +82,18 @@ record Customer(Integer id, Date enrollment, String name) {
 @Controller
 class HelloGraphqlController {
 
-
+	private final ThreadLocal<SimpleDateFormat> df = new ThreadLocal<>();
 	private final Map<Integer, Customer> db = new ConcurrentHashMap<>();
 	private final AtomicInteger id = new AtomicInteger();
 
 	HelloGraphqlController() {
-		List.of(
-				"Yuxin", "Violetta", "Olga", "Madhura",
-				"Josh", "Dave", "Yuxin", "Spencer")
+		List.of("Yuxin", "Violetta", "Olga", "Madhura", "Josh", "Dave", "Yuxin", "Spencer")
 			.forEach(this::buildCustomer);
 	}
 
 	@MutationMapping
 	Mono<Customer> addCustomer(@Argument String name) {
-		var key = buildCustomer(name);
+		var key = this.buildCustomer(name);
 		return Mono.just(this.db.get(key));
 	}
 
@@ -123,8 +121,6 @@ class HelloGraphqlController {
 			.map(auth -> "Hello, " + auth.getName() + "!");
 	}
 
-
-	private final ThreadLocal<SimpleDateFormat> df = new ThreadLocal<>();
 
 	private SimpleDateFormat buildIsoDateFormat() {
 		if (this.df.get() == null) {
